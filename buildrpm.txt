@@ -1,0 +1,54 @@
+Dear Steve,
+
+Building RPM 4.0.4 was relatively easy, I only had to modify
+db3/configure to configure correctly and lib/signature.c slightly to
+get it to compile correctly. I also built the BerkeleyDB package
+provided in the RPM distribution. Although I don't agree with the
+decision to fix a specific BerkeleyDB distribution to a specific
+version of RPM, I have noticed that they do sometimes hack the db
+distribution to work with RPM.
+
+I used the following packages from your site to provide the
+development environment:
+
+gawk-3.1.0-sol8-sparc-local.gz
+gcc-2.95.3-sol8-sparc-local.gz
+gettext-0.10.37-sol8-sparc-local.gz
+grep-2.5-sol8-sparc-local.gz
+libiconv-1.6.1-sol8-sparc-local.gz
+libtool-1.4-sol8-sparc-local.gz
+m4-1.4-sol8-sparc-local.gz
+make-3.79.1-sol8-sparc-local.gz
+patch-2.5.4-sol8-sparc-local.gz
+
+I then applied the included patch to change db3/configure and
+lib/signature.c. 
+
+patch -p0 < rpm.patch
+
+After that I could configure and make the package.
+
+configure --without-python
+make
+
+I don't have anything against python, I just don't use it yet.
+
+Packaging the RPM distribution required that I use installwatch to get
+an accurate list of the installation files. The installwatch program
+included in the checkinstall package
+(http://asic-linux.com.mx/~izto/checkinstall/index.php) allows you to
+create a directory tree containing only the files installed by the
+install step, without having to go to the trouble of creating a chroot
+environment. I've included a patch to checkinstall so that it will
+build on Solaris. I also include a perl script called solpkg.pl to
+create this tree of the installed files. I'd like to integrate
+make_package into this process at some point.
+
+solpkg.pl make install-strip
+
+After getting the directory with the installed files in it, I cd to
+that directory and create the depend, postinstall, preremove,
+postremove and copyright file at the top of the directory tree. I then
+run a modified version of make_package to create the package.
+
+
