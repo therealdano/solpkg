@@ -11,7 +11,7 @@ DESTDIR=
 MKTEMP=$(shell which mktemp)
 TEMPDIR:=$(shell $(MKTEMP) -d /tmp/solpkg.XXXXXX)
 
-install:
+install: $(MAN1FILES)
 	if [ ! -d $(DESTDIR)$(BINDIR) ];then \
 	    mkdir -p $(DESTDIR)$(BINDIR);\
 	fi
@@ -38,7 +38,7 @@ dist:
 	gzip --best solpkg-$(VERSION).tar
 	rm -rf $(TEMPDIR)
 
-man:	solpkg.pl
+solpkg.pl.1:	solpkg.pl
 	pod2man solpkg.pl solpkg.pl.1
 
 clean:
