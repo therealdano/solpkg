@@ -17,6 +17,11 @@ solpkg.pl make install
 
 Generate tree of installed files. This script is a wrapper around the install command and uses the installwatch package to intercept low level commands to record all the file installation fuctions actually executed. Then it creates a temporary archive of the files, extracting them to a temporary directory named for the directory from which the install command is run. The files will still be installed in the original target directories, it's just that you will have a copy of all the files so that you could package them separately.
 
+Before using, check your Makefile. If you have one that prefixes all the installation with something like
+$(DESTDIR), then you don't need to use solpkg.pl, you can just define DESTDIR when running make, e.g.
+
+  $ make DESTDIR=/tmp/solpkg install
+
 =head1 ARGUMENTS
 
 =over 4
